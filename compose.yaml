@@ -1,0 +1,39 @@
+services:
+  grafana:
+    image: grafana/grafana-oss:11.6.1
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASS}
+      - GF_INSTALL_PLUGINS=grafana-pyroscope-app
+      # disable analytics
+      - GF_ANALYTICS_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR-UPDATES=false
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - pyroscope
+      - prometheus
+
+  pyroscope:
+    image: grafana/pyroscope:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:4040:4040
+    volumes:
+      - ./config/pyroscope/pyroscope.yaml:/etc/pyroscope/config.yaml
+
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:9090:9090
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+
+volumes:
+  grafana-data:
+  prometheus-data:

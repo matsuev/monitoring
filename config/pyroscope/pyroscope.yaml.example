@@ -1,0 +1,11 @@
+scrape-configs:
+  - job-name: pyroscope
+    scrape-interval: 10s
+    enabled-profiles: [cpu, mem, goroutines, mutex, block]
+    static-configs:
+      - application: example-app
+        spy-name: gospy
+        targets:
+          - app:8080
+        labels:
+          env: dev
