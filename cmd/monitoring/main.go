@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	monitoring.StartProfiling()
+	monitoring.StartProfiling("http://127.0.0.1:4040", "my.super.application")
 	monitoring.StartMetrics("127.0.0.1:8001")
 }
 

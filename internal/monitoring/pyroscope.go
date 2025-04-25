@@ -8,16 +8,16 @@ import (
 )
 
 // StartProfiling ...
-func StartProfiling() {
+func StartProfiling(addr string, app string) {
 	// These 2 lines are only required if you're using mutex or block profiling
 	// Read the explanation below for how to set these rates:
 	runtime.SetMutexProfileFraction(5)
 	runtime.SetBlockProfileRate(5)
 
 	if _, err := pyroscope.Start(pyroscope.Config{
-		ApplicationName: "simple.golang.app",
+		ApplicationName: app,
 		// replace this with the address of pyroscope server
-		ServerAddress: "http://127.0.0.1:4040",
+		ServerAddress: addr,
 		// you can disable logging by setting this to nil
 		// Logger: pyroscope.StandardLogger,
 		// Optional HTTP Basic authentication (Grafana Cloud)
