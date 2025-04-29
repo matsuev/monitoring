@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -9,8 +10,11 @@ import (
 )
 
 func main() {
+	fmt.Println("gdsahjgfaj")
+	println("gadhjgajdsfg")
+
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		AddSource: true,
+		AddSource: false,
 		Level:     slog.LevelDebug,
 	}))
 

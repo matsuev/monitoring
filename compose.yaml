@@ -57,7 +57,7 @@ services:
       context: ./cmd/logging
       dockerfile: Dockerfile
     labels:
-      logging: "dev"
+      logging: "grafana"
     depends_on:
       - promtail
 
