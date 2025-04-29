@@ -9,9 +9,13 @@ import (
 
 // StartMetrics ...
 func StartMetrics(addr string) {
+	mux := http.NewServeMux()
+
+	mux.Handle("/metrics", promhttp.Handler())
+
 	srv := &http.Server{
 		Addr:    addr,
-		Handler: promhttp.Handler(),
+		Handler: mux,
 	}
 
 	go func() {

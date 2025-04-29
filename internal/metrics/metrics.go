@@ -6,14 +6,9 @@ import (
 )
 
 var (
-	// OpsProcessed ...
-	OpsProcessed = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "myapp_processed_ops_total",
-		Help: "The total number of processed events",
-	})
-
+	// HandlerCount ...
 	HandlerCount = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "myapp_http_requests_total",
+		Name: "api_http_requests_total",
 		Help: "The total number of HTTP requests",
 	}, []string{"endpoint"})
 )

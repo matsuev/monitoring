@@ -8,7 +8,7 @@ services:
       - GF_INSTALL_PLUGINS=grafana-pyroscope-app
       # disable analytics
       - GF_ANALYTICS_ENABLED=false
-      - GF_ANALYTICS_CHECK_FOR_UPDATES=true
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
     ports:
       - 127.0.0.1:3000:3000
     volumes:
@@ -33,6 +33,33 @@ services:
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+
+  loki:
+    image: grafana/loki:latest
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3100:3100
+    volumes:
+      - ./config/loki/loki.yaml://etc/loki/loki.yaml
+    command: -config.file=/etc/loki/loki.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./config/promtail/promtail.yaml:/etc/promtail/promtail.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/promtail.yml
+    depends_on:
+      - loki
+
+  logging:
+    build:
+      context: ./cmd/logging
+      dockerfile: Dockerfile
+    labels:
+      logging: "dev"
+    depends_on:
+      - promtail
 
 volumes:
   grafana-data:
