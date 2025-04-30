@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 func main() {
@@ -29,10 +31,14 @@ func main() {
 	}()
 
 	go func() {
+		i := 0
+
 		t := time.NewTicker(time.Second)
 
 		for range t.C {
-			slog.Error("error message")
+			i++
+			uid := uuid.New()
+			slog.Error("error message", slog.Int("count", i), slog.String("id", uid.String()))
 		}
 	}()
 
